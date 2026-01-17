@@ -47,13 +47,10 @@ body {
 }
 </style>
 
-<script src="file/jquery.min.js"></script>
-<script src="file/jscex.min.js"></script>
-<script src="file/jscex-parser.js"></script>
-<script src="file/jscex-jit.js"></script>
-<script src="file/jscex-builderbase.min.js"></script>
-<script src="file/jscex-async.min.js"></script>
-<script src="file/jscex-async-powerpack.min.js"></script>
+<script src="file/wind-core.js"></script>
+<script src="file/wind-compiler.js"></script>
+<script src="file/wind-builderbase.js"></script>
+<script src="file/wind-async.js"></script>
 <script src="file/function.js"></script>
 <script src="file/love.js"></script>
 </head>
@@ -97,78 +94,13 @@ body {
     <div id="clock-box">
         <span id="clock">577 days 0 hours 0 minutes 0 seconds</span>
     </div>
-
-    <canvas id="canvas" width="1100" height="680"></canvas>
 </div>
 </div>
 
 <script>
-/* TREE + HEART FLOWERS */
-(function () {
-    var canvas = $("#canvas");
-    var width = canvas.width();
-    var height = canvas.height();
-    canvas.attr("width", width);
-    canvas.attr("height", height);
-
-    var opts = {
-        seed: { x: width / 2 - 20, color: "rgb(255,64,129)", scale: 2 },
-        branch: [
-            [535, 680, 570, 250, 500, 200, 30, 100, [
-                [540, 500, 455, 417, 340, 400, 13, 100],
-                [550, 445, 600, 356, 680, 345, 12, 100],
-                [546, 357, 608, 252, 678, 221, 6, 100]
-            ]]
-        ],
-        bloom: { num: 7000, width: width, height: height },
-        footer: { width: 1200, height: 5, speed: 10 }
-    };
-
-    var tree = new Tree(canvas[0], width, height, opts);
-    var seed = tree.seed;
-    var foot = tree.footer;
-    var hold = 1;
-
-    canvas.click(function () { hold = 0; });
-
-    var seedAnimate = eval(Jscex.compile("async", function () {
-        seed.draw();
-        while (hold) $await(Jscex.Async.sleep(10));
-        while (seed.canScale()) {
-            seed.scale(0.95);
-            $await(Jscex.Async.sleep(10));
-        }
-        while (seed.canMove()) {
-            seed.move(0, 2);
-            foot.draw();
-            $await(Jscex.Async.sleep(10));
-        }
-    }));
-
-    var growAndFlowerAnimate = eval(Jscex.compile("async", function () {
-        while (tree.canGrow()) {
-            tree.grow();
-            tree.flower(4); // heart flowers during growth
-            $await(Jscex.Async.sleep(10));
-        }
-        while (tree.canFlower()) {
-            tree.flower(28);
-            $await(Jscex.Async.sleep(8));
-        }
-    }));
-
-    var textAnimate = eval(Jscex.compile("async", function () {
-        $("#code").show().typewriter();
-    }));
-
-    var runAsync = eval(Jscex.compile("async", function () {
-        $await(seedAnimate());
-        $await(growAndFlowerAnimate());
-        textAnimate().start();
-    }));
-
-    runAsync().start();
-})();
+$(document).ready(function() {
+    $("#code").show().typewriter();
+});
 </script>
 
 <script>
