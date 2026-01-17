@@ -64,6 +64,8 @@ body {
 
 <canvas id="petals"></canvas>
 
+<canvas id="canvas"></canvas>
+
 <div id="wrap">
     <div id="text">
         <div id="code">
@@ -149,6 +151,26 @@ function animatePetals() {
     requestAnimationFrame(animatePetals);
 }
 animatePetals();
+</script>
+
+<script>
+/* TREE ANIMATION */
+const treeCanvas = document.getElementById("canvas");
+treeCanvas.width = window.innerWidth;
+treeCanvas.height = window.innerHeight;
+
+const tree = new Tree(treeCanvas);
+
+function animateTree() {
+  if (tree.canGrow()) {
+    tree.grow();
+    tree.draw();
+    requestAnimationFrame(animateTree);
+  } else {
+    tree.draw();
+  }
+}
+animateTree();
 </script>
 </body>
 </html>
